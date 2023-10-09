@@ -11,7 +11,18 @@ class VinylController extends AbstractController
     #[Route('/')]
     public function homepage(): Response {
         
-        return new Response('Page One');
+        $tracks = [
+            ['song' => 'No Gods, No Masters', 'artist' => 'Machine Head'],
+            ['song' => 'Pisces','artist' => 'Jinjer'],
+            ['song' => 'Around The Fur','artist' => 'Deftones'],
+            ['song' => 'Rose Tattoo','artist' => 'Dropkick Murphys'],
+            ['song' => 'Here Comes The Boom','artist' => 'Rise Of The Northstar'],
+        ];
+
+        return $this->render('vinyl/homepage.html.twig', [
+            'title' => 'Favourite Mix',
+            'tracks' => $tracks,
+        ]);
     }
 
     #[Route('/browse/{genre}')]
