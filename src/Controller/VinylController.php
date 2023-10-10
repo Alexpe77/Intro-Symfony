@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class VinylController extends AbstractController
 {
-    #[Route('/')]
+    #[Route('/', name: 'app_homepage')]
     public function homepage(): Response
     {
 
@@ -26,7 +26,7 @@ class VinylController extends AbstractController
         ]);
     }
 
-    #[Route('/browse/{slug}')]
+    #[Route('/browse/{slug}', name: 'app_browse')]
     public function browse(string $slug = null): Response
     {
 
