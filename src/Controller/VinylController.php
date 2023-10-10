@@ -9,14 +9,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class VinylController extends AbstractController
 {
     #[Route('/')]
-    public function homepage(): Response {
-        
+    public function homepage(): Response
+    {
+
         $tracks = [
             ['song' => 'No Gods, No Masters', 'artist' => 'Machine Head'],
-            ['song' => 'Pisces','artist' => 'Jinjer'],
-            ['song' => 'Around The Fur','artist' => 'Deftones'],
-            ['song' => 'Rose Tattoo','artist' => 'Dropkick Murphys'],
-            ['song' => 'Here Comes The Boom','artist' => 'Rise Of The Northstar'],
+            ['song' => 'Pisces', 'artist' => 'Jinjer'],
+            ['song' => 'Around The Fur', 'artist' => 'Deftones'],
+            ['song' => 'Rose Tattoo', 'artist' => 'Dropkick Murphys'],
+            ['song' => 'Here Comes The Boom', 'artist' => 'Rise Of The Northstar'],
         ];
 
         return $this->render('vinyl/homepage.html.twig', [
@@ -25,15 +26,14 @@ class VinylController extends AbstractController
         ]);
     }
 
-    #[Route('/browse/{genre}')]
-    public function browse(string $genre = null): Response {
-        
-        if($genre){
-            $title = 'Genre: ' . str_replace('-', ' ', $genre);
-        } else {
-            $title = 'All genres';
-        }
-        
-        return new Response($title);
+    #[Route('/browse/{slug}')]
+    public function browse(string $slug = null): Response
+    {
+
+        $genre = $slug ? str_replace('-', ' ', $slug) : null;
+
+        return $this->render('vinyl/browse.html.twig', [
+            'genre' => $genre,
+        ]);
     }
 }
