@@ -5,11 +5,12 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twig\Environment;
 
 class VinylController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function homepage(): Response
+    public function homepage(Environment $twig): Response
     {
 
         $tracks = [
@@ -20,10 +21,12 @@ class VinylController extends AbstractController
             ['song' => 'Here Comes The Boom', 'artist' => 'Rise Of The Northstar'],
         ];
 
-        return $this->render('vinyl/homepage.html.twig', [
+        $html = $twig->render('vinyl/homepage.html.twig', [
             'title' => 'Favourite Mix',
             'tracks' => $tracks,
         ]);
+
+        return new Response($html);
     }
 
     #[Route('/browse/{slug}', name: 'app_browse')]
