@@ -34,9 +34,34 @@ class VinylController extends AbstractController
     {
 
         $genre = $slug ? str_replace('-', ' ', $slug) : null;
+        $mixes = $this->getMixes();
 
         return $this->render('vinyl/browse.html.twig', [
             'genre' => $genre,
+            'mixes' => $mixes,
         ]);
+    }
+
+    private function getMixes(): array {
+        return [
+            [
+                'title' => 'PB & Jams',
+                'trackCount' => 14,
+                'genre' => 'Rock',
+                'createdAt' => new \DateTime('2021-10-02'),
+            ],
+            [
+                'title' => 'Put a Hex on your Ex',
+                'trackCount' => 8,
+                'genre' => 'Heavy Metal',
+                'createdAt' => new \DateTime('2022-04-28'),
+            ],
+            [
+                'title' => 'Spice Grills - Summer Tunes',
+                'trackCount' => 10,
+                'genre' => 'Pop',
+                'createdAt' => new \DateTime('2019-06-20'),
+            ],
+        ];
     }
 }
