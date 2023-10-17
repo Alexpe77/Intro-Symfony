@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +38,10 @@ class VinylController extends AbstractController
     {
 
         $genre = $slug ? str_replace('-', ' ', $slug) : null;
-        $mixes = $cache->get('mixes_data', function() use($httpClient) {
+        $mixes = $cache->get('mixes_data', function(CacheItemInterface $cacheItem) use($httpClient) {
+            $cacheItem->expiresAfter(5);
             $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json');
-            
+
             return $response->toArray();
         });
 
