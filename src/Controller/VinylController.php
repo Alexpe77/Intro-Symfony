@@ -3,9 +3,10 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Knp\Bundle\TimeBundle\DateTimeFormatter;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 
 
@@ -32,42 +33,19 @@ class VinylController extends AbstractController
     }
 
     #[Route('/browse/{slug}', name: 'app_browse')]
-    public function browse(DateTimeFormatter $timeFormatter, string $slug = null): Response
+    public function browse(HttpClientInterface $httpClient, CacheInterface $cache, string $slug = null): Response
     {
 
         $genre = $slug ? str_replace('-', ' ', $slug) : null;
-        $mixes = $this->getMixes();
-
-        foreach ($mixes as $key => $mix) {
-            $mixes[$key]['ago'] = $timeFormatter->formatDiff($mix['createdAt']);
-        }
+        $mixes = $cache->get('mixes_data', function() use($httpClient) {
+            $response = $httpClient->request('GET', 'https://raw.githubusercontent.com/SymfonyCasts/vinyl-mixes/main/mixes.json');
+            
+            return $response->toArray();
+        });
 
         return $this->render('vinyl/browse.html.twig', [
             'genre' => $genre,
             'mixes' => $mixes,
         ]);
-    }
-
-    private function getMixes(): array {
-        return [
-            [
-                'title' => 'PB & Jams',
-                'trackCount' => 14,
-                'genre' => 'Rock',
-                'createdAt' => new \DateTime('2021-10-02'),
-            ],
-            [
-                'title' => 'Put a Hex on your Ex',
-                'trackCount' => 8,
-                'genre' => 'Heavy Metal',
-                'createdAt' => new \DateTime('2022-04-28'),
-            ],
-            [
-                'title' => 'Spice Grills - Summer Tunes',
-                'trackCount' => 10,
-                'genre' => 'Pop',
-                'createdAt' => new \DateTime('2019-06-20'),
-            ],
-        ];
     }
 }
