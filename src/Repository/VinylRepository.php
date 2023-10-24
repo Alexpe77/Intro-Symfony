@@ -21,20 +21,23 @@ class VinylRepository extends ServiceEntityRepository
         parent::__construct($registry, Vinyl::class);
     }
 
-//    /**
-//     * @return Vinyl[] Returns an array of Vinyl objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('v')
-//            ->andWhere('v.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('v.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Vinyl[] Returns an array of Vinyl objects
+    */
+   public function findAllOrderedByVotes(string $genre = null): array
+   {
+        $queryBuilder = $this->createQueryBuilder('mix')
+       ->orderBy('mix.votes', 'DESC');
+
+       if ($genre) {
+        $queryBuilder->andWhere('mix.genre = :genre')
+        ->setParameter('genre', $genre);
+       }
+
+       return $queryBuilder
+       ->getQuery()
+       ->getResult();
+   }
 
 //    public function findOneBySomeField($value): ?Vinyl
 //    {
