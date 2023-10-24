@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Vinyl;
-use App\Service\MixRepository;
 use App\Repository\VinylRepository;
 use Psr\Cache\CacheItemInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Cache\CacheInterface;
 use Twig\Environment;
 use function Symfony\Component\String\u;
-use Doctrine\ORM\EntityManagerInterface;
 
 class VinylController extends AbstractController
 {
