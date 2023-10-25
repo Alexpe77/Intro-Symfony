@@ -3,11 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Vinyl;
+use App\Repository\VinylRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\VinylRepository;
 
 class MixController extends AbstractController
 {
@@ -33,9 +33,7 @@ class MixController extends AbstractController
     }
 
     #[Route('/mix/{id}', name: 'app_mix_show')]
-    public function show($id, VinylRepository $mixRepository) {
-        
-        $mix = $mixRepository->find($id);
+    public function show(Vinyl $mix): Response {
         
         return $this->render('mix/show.html.twig', [
             'mix' => $mix,
