@@ -39,4 +39,9 @@ class MixController extends AbstractController
             'mix' => $mix,
         ]);
     }
+
+    #[Route('/mix/{id}/vote', name: 'app_mix_vote', methods: ['POST'])]
+    public function vote(Vinyl $mix): Response {
+        dd($mix);
+    }
 }
