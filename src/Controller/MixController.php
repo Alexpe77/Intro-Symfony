@@ -6,6 +6,7 @@ use App\Entity\Vinyl;
 use App\Repository\VinylRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -41,7 +42,15 @@ class MixController extends AbstractController
     }
 
     #[Route('/mix/{id}/vote', name: 'app_mix_vote', methods: ['POST'])]
-    public function vote(Vinyl $mix): Response {
+    public function vote(Vinyl $mix, Request $request): Response {
+
+        $direction = $request->request->get('direction', 'up');
+
+        if ($direction === 'up') {
+            $mix->setVotes($mix->getVotes() + 1);
+        } else {
+            $mix->setVotes($mix->getVotes() - 1);
+        }
         dd($mix);
     }
 }
