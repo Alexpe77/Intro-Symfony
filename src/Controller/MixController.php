@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\VinylRepository;
 
 class MixController extends AbstractController
 {
@@ -29,5 +30,15 @@ class MixController extends AbstractController
             $mix->getId(),
             $mix->getTrackCount()
         ));
+    }
+
+    #[Route('/mix/{id}')]
+    public function show($id, VinylRepository $mixRepository) {
+        
+        $mix = $mixRepository->find($id);
+        
+        return $this->render('mix/show.html.twig', [
+            'mix' => $mix,
+        ]);
     }
 }
