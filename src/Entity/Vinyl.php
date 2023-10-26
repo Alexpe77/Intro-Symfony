@@ -6,11 +6,14 @@ use App\Repository\VinylRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: VinylRepository::class)]
 #[Broadcast]
 class Vinyl
 {
+    use TimestampableEntity;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -29,14 +32,7 @@ class Vinyl
     private ?string $genre = null;
 
     #[ORM\Column]
-    private \DateTimeImmutable $createdAt;
-
-    #[ORM\Column]
     private int $votes = 0;
-
-    public function __construct() {
-        $this->createdAt = new \DateTimeImmutable();
-    }
 
     public function getId(): ?int
     {
@@ -91,18 +87,6 @@ class Vinyl
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): static
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getVotes(): ?int
     {
         return $this->votes;
@@ -113,6 +97,16 @@ class Vinyl
         $this->votes = $votes;
 
         return $this;
+    }
+
+    public function upVote(): void {
+
+        $this->votes++;
+    }
+
+    public function downVote(): void {
+
+        $this->votes--;
     }
 
     public function getVotesString() {
